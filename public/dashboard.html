@@ -1,0 +1,1242 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+   
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+    
+        body {
+            background-color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+    
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+    
+        .title {
+            color: #1E3A8A;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+    
+        .input-group {
+            margin-bottom: 16px;
+        }
+    
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-top: 4px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+    
+        input:focus {
+            outline: none;
+            border-color: #FF914D;
+        }
+    
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #FF914D;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 16px;
+        }
+    
+        button:hover {
+            background-color: #ff8033;
+        }
+    
+        .logout-btn {
+            background-color: #1E3A8A;
+        }
+    
+        .logout-btn:hover {
+            background-color: #1e3a8acc;
+        }
+    
+        label {
+            color: #1E3A8A;
+            font-weight: 500;
+        }
+    
+        .switch-page {
+            text-align: center;
+            color: #1E3A8A;
+        }
+    
+        .switch-page a {
+            color: #FF914D;
+            text-decoration: none;
+            font-weight: 500;
+        }
+    
+        .switch-page a:hover {
+            text-decoration: underline;
+        }
+    
+        .user-info {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 12px;
+            background-color: #f8fafc;
+            border: 1px solid #e5e7eb;
+        }
+    
+        .user-info .title {
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+    
+        .info-content {
+            color: #1E3A8A;
+            line-height: 1.6;
+        }
+    </style>
+
+</head>
+<body>
+    <div class="container">
+        <h2 class="title">Dashboard</h2>
+        <div class="user-info">
+            <h3 class="title">User Information</h3>
+            <div id="information" class="info-content">Loading...</div>
+            <button onclick="logout()" class="logout-btn">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        async function getUserInformation() {
+            try {
+                const token = localStorage.getItem("token");
+                if (!token) {
+                    window.location.href = '/signin';
+                    return;
+                }
+
+                const response = await axios.get("/me", {
+                    headers: {
+                        token: token
+                    }
+                });
+
+                if (response.data) {
+                    document.getElementById("information").innerHTML = 
+                        `<strong>Username:</strong> ${response.data.username}`;
+                }
+            } catch (error) {
+                if (error.response?.status === 401) {
+                    localStorage.removeItem("token");
+                    window.location.href = '/signin';
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("token");
+            window.location.href = '/signin';
+        }
+
+        window.onload = function() {
+            getUserInformation();
+        };
+    </script>
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food waste</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/766a5343f9.js" crossorigin="anonymous"></script>
+    <STYLE>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'poppins', sans-serif;
+}
+
+body {
+    background-color: #e8f2e8;
+}
+
+.header {
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* Navbar Styles */
+.menu-bar {
+    background-color: #2c5a2c;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 7%;
+    position: relative;
+}
+
+.logo-container {
+    background-color: #4a7a4a;
+    padding: 15px 30px;
+    border-radius: 0 0 15px 15px;
+    margin-top: -15px;
+}
+
+.logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #90EE90;
+}
+
+.nav-links i {
+    margin-right: 8px;
+}
+
+/* Hero Section */
+.hero-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4rem 7%;
+    position: relative;
+    min-height: 60vh;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 600px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    color: #1a3a1a;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.hero-content p {
+    color: #4a7a4a;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-left: 2rem;
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.read-more-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #4a7a4a;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background-color 0.3s;
+}
+
+.read-more-btn:hover {
+    background-color: #2c5a2c;
+}
+
+
+/* Decorative Elements */
+.decorative-leaves {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background-image: url('pics/leaves.png');
+    background-repeat: repeat-x;
+    background-position: bottom;
+    opacity: 0.2;
+}
+
+/* Dropdown Styles */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.nested-dropdown-content {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+
+.nested-dropdown:hover .nested-dropdown-content {
+    display: block;
+}
+
+.dropdown-content a,
+.nested-dropdown-content a {
+    color: #2c5a2c;
+    padding: 12px 20px;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content a:hover,
+.nested-dropdown-content a:hover {
+    background-color: #f0f8f0;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 968px) {
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-image {
+        margin: 2rem 0 0 0;
+    }
+
+    .features-section {
+        flex-direction: column;
+    }
+
+    .feature-card {
+        border-right: none;
+        border-bottom: 1px dashed #ccc;
+    }
+
+    .feature-card:last-child {
+        border-bottom: none;
+    }
+
+    .nav-links {
+        display: none;
+    }
+}
+
+
+
+
+
+
+
+/* Content sections styles */
+.content-sections {
+    padding: 40px 7%;
+    background-color: #f9f9f9;
+}
+
+.info-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 80px 0;
+    gap: 50px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.info-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.info-section.reverse {
+    flex-direction: row-reverse;
+}
+
+.text-content {
+    flex: 1;
+    padding: 20px;
+    animation: fadeIn 1s ease-out;
+}
+
+.text-content h2 {
+    color: #2c5a2c;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.text-content h2::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 60px;
+    height: 3px;
+    background-color: #4CAF50;
+    transition: width 0.3s ease;
+}
+
+.text-content:hover h2::after {
+    width: 100px;
+}
+
+.text-content p {
+    color: #555;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.image-content {
+    flex: 1;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.image-content:hover {
+    transform: scale(1.02);
+}
+
+.section-image {
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease;
+}
+
+.section-image:hover {
+    transform: scale(1.05);
+}
+
+.learn-more {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.learn-more:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 968px) {
+    .info-section,
+    .info-section.reverse {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .text-content h2::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .nav-links li {
+        margin: 10px 15px;
+        font-size: medium;
+    }
+
+    .logo {
+        width: 25%;
+    }
+}
+
+    </STYLE>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.info-section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+        
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+        </script>
+
+</head>
+<body>
+    <div class="header">
+        <nav class="menu-bar">
+            <div class="logo-container">
+                <img src="pics/logo2.jpg" alt="logo" class="logo">
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="country.html"><i class="fa-solid fa-plane"></i>Home</a></li>
+                <li><a href="about.html"><i class="fa fa-user"></i>About Us</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn"><i class="fa fa-user"></i>Let's Start <i class="fa fa-caret-down"></i></a>
+                    <div class="dropdown-content">
+                        <a href="/bsm.html" onclick="navtobsm()">Bulk Scale Waste</a>
+                        <div class="nested-dropdown">
+                            <a href="#" class="nested-dropbtn">Small Scale Waste</a>
+                            <div class="nested-dropdown-content">
+                                <a href="innovative-recipe.html">Innovative Recipe</a>
+                                <a href="donate-form.html">Donate to Needy</a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="contact.html"><i class="fa fa-phone"></i>Contact Us</a></li>
+            </ul>
+        </nav>    
+
+        <div class="hero-section">
+            <div class="hero-content">
+                <h1>WASTE<br>MANAGEMENT</h1>
+                <p>Transform surplus food into sustainable solutions. Join our mission to reduce waste and feed communities.</p>
+                <a href="#learn-more" class="read-more-btn">Read more...</a>
+            </div>
+            <div class="hero-image">
+                <img src="pics/waste-bin.png" alt="Waste Management">
+            </div>
+            <div class="decorative-leaves"></div>
+        </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <div class="content-sections">
+            <section class="info-section">
+                <div class="text-content">
+                    <h2>Bulk Scale Waste Management</h2>
+                    <p>Are you a restaurant, hotel, supermarket, or food manufacturing company with excess food? Partner with us as a bulk donor to efficiently channel your surplus towards reducing food waste and supporting communities in need. Together, we can transform large-scale food waste into a powerful resource for positive change.</p>
+                    <a href="bulk-donor-page.html" class="learn-more">Learn More</a>
+                </div>
+                <div class="image-content">
+                    <a href="bulk-donor-page.html">
+                        <img src="/api/placeholder/600/400" alt="Bulk Scale Waste Management" class="section-image">
+                    </a>
+                </div>
+            </section>
+    
+        <section class="info-section reverse">
+            <div class="text-content">
+                <h2>Small Scale Waste Management</h2>
+                <p>Are you an individual, family, or small business with leftover meals or unused groceries? Join us as a small-scale donor and make a meaningful contribution to reducing food waste. Every little effort counts in building a sustainable future for our planet and helping those in need.</p>
+                <a href="small-donor-page.html" class="learn-more">Learn More</a>
+            </div>
+            <div class="image-content">
+                <a href="small-donor-page.html">
+                    <img src="/api/placeholder/600/400" alt="Small Scale Waste Management" class="section-image">
+                </a>
+            </div>
+        </section>
+    
+        <section class="info-section">
+            <div class="text-content">
+                <h2>Smart Recipe Assistant</h2>
+                <p>Not sure what to cook with your leftover ingredients? Our AI-powered recipe assistant is here to help! Get personalized recipe suggestions based on the ingredients you have, reduce food waste, and discover exciting new dishes. Simply tell our chatbot what's in your kitchen, and it will suggest creative ways to use them.</p>
+                <a href="chatbot-page.html" class="learn-more">Try Recipe Assistant</a>
+            </div>
+            <div class="image-content">
+                <a href="chatbot-page.html">
+                    <img src="/api/placeholder/600/400" alt="Recipe Chatbot" class="section-image">
+                </a>
+            </div>
+        </section>
+    </div>
+    </div>
+
+
+<script>
+    function navtobsm(){
+        window.location.href = "/bsm.html";
+    }
+</script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food waste</title>
+    <!-- <link rel="stylesheet" href="style.css"> -->
+    <script src="https://kit.fontawesome.com/766a5343f9.js" crossorigin="anonymous"></script>
+    <STYLE>
+        * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'poppins', sans-serif;
+}
+
+body {
+    background-color: #e8f2e8;
+}
+
+.header {
+    min-height: 100vh;
+    width: 100%;
+}
+
+/* Navbar Styles */
+.menu-bar {
+    background-color: #2c5a2c;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 7%;
+    position: relative;
+}
+
+.logo-container {
+    background-color: #2c5a2c;
+
+    /* background-color: #7a4a74; */
+    padding: 15px 30px;
+    border-radius: 0 0 15px 15px;
+    margin-top: -15px;
+}
+
+.logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    font-size: 1.7rem;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.7rem;
+    transition: color 0.3s;
+}
+
+.nav-links a:hover {
+    color: #90EE90;
+}
+
+.nav-links i {
+    margin-right: 8px;
+}
+
+/* Hero Section */
+.hero-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4rem 7%;
+    position: relative;
+    min-height: 60vh;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 600px;
+}
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    color: #1a3a1a;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+}
+
+.hero-content p {
+    color: #4a7a4a;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.hero-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    margin-left: 2rem;
+}
+
+.hero-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.read-more-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #4a7a4a;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    transition: background-color 0.3s;
+}
+
+.read-more-btn:hover {
+    background-color: #2c5a2c;
+}
+
+/* Decorative Elements */
+.decorative-leaves {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background-image: url('pics/leaves.png');
+    background-repeat: repeat-x;
+    background-position: bottom;
+    opacity: 0.2;
+}
+
+/* Dropdown Styles */
+ .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.nested-dropdown-content {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background-color: white;
+    min-width: 200px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-radius: 5px;
+}
+
+.nested-dropdown:hover .nested-dropdown-content {
+    display: block;
+}
+
+.dropdown-content a,
+.nested-dropdown-content a {
+    color: #2c5a2c;
+    padding: 12px 20px;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+.dropdown-content a:hover,
+.nested-dropdown-content a:hover {
+    background-color: #f0f8f0;
+} 
+
+
+/* Dropdown Styles */
+/* .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #444;
+    min-width: 200px;
+    border-radius: 5px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+}
+
+.dropdown-content li {
+    list-style: none;
+    padding: 10px 15px;
+}
+
+.dropdown-content li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-content li a:hover {
+    background-color: #555;
+    border-radius: 5px;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+} */
+
+
+/* Responsive Design */
+@media screen and (max-width: 968px) {
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-image {
+        margin: 2rem 0 0 0;
+    }
+
+    .features-section {
+        flex-direction: column;
+    }
+
+    .feature-card {
+        border-right: none;
+        border-bottom: 1px dashed #ccc;
+    }
+
+    .feature-card:last-child {
+        border-bottom: none;
+    }
+
+    .nav-links {
+        display: none;
+    }
+}
+
+/* Content sections styles */
+.content-sections {
+    padding: 40px 7%;
+    background-color: #f9f9f9;
+}
+
+.info-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 80px 0;
+    gap: 50px;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.info-section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.info-section.reverse {
+    flex-direction: row-reverse;
+}
+
+.text-content {
+    flex: 1;
+    padding: 20px;
+    animation: fadeIn 1s ease-out;
+}
+
+.text-content h2 {
+    color: #2c5a2c;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.text-content h2::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    width: 60px;
+    height: 3px;
+    background-color: #4CAF50;
+    transition: width 0.3s ease;
+}
+
+.text-content:hover h2::after {
+    width: 100px;
+}
+
+.text-content p {
+    color: #555;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 25px;
+}
+
+.image-content {
+    flex: 1;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.image-content:hover {
+    transform: scale(1.02);
+}
+
+.section-image {
+    width: 100%;
+    height: auto;
+    transition: transform 0.5s ease;
+}
+
+.section-image:hover {
+    transform: scale(1.05);
+}
+
+.learn-more {
+    display: inline-block;
+    padding: 12px 25px;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.learn-more:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media screen and (max-width: 968px) {
+    .info-section,
+    .info-section.reverse {
+        flex-direction: column;
+        text-align: center;
+        gap: 30px;
+    }
+
+    .text-content h2::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .nav-links li {
+        margin: 10px 15px;
+        font-size: medium;
+    }
+
+    .logo {
+        width: 25%;
+    }
+}
+
+/* next btn */
+
+.start-btn{
+    text-decoration: none;
+    background: #26864f;
+    color: #fff;
+    width: 80%;
+    max-width: 350px;
+    display: block;
+    text-align: center;
+    margin: 60px auto;
+    padding: 15px;
+    border-radius: 30px;
+    font-size: 20px;
+}
+
+/* -----------about-msg--------------- */
+.about-msg{
+    text-align: center;
+    margin: 80px  0;
+    color: #333;
+    font-size: 17px;
+}
+.about-msg h2{
+    font-size: 28px;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+/* ---------------footer------------------*/
+.footer{
+    margin: 80px 0 10px;
+    text-align: center;
+}
+.footer a{
+    text-decoration: none;
+    /* color: #441313; */
+    color: #1a3a1a;
+    /* color: #999; */
+    font-size: 22px;
+    margin: 0 10px;
+}
+.footer hr{
+    background-color: #999;
+    height: 1px;
+    width:100% ;
+    border: 0;
+    margin: 20px 0;
+}
+.footer p{
+    padding-bottom:15px ;
+}
+
+    </STYLE>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.info-section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.2
+            });
+        
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+        </script>
+
+</head>
+
+<body>
+    <div class="header">
+        <nav class="menu-bar">
+            <div class="logo-container">
+                <img src="pics/logo.jpg" alt="logo" class="logo">
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="country.html">Home</a></li>
+                <li><a href="#about-msg">About Us</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Let's Start</a>
+                    <ul class="dropdown-content">
+                        <li><a href="/bsm.html" onclick="navtobsm()">Bulk Scale Waste</a></li>
+                        <li class="nested-dropdown">
+                            <a href="smallform.html">Small Scale Waste</a>
+                            <ul class="nested-dropdown-content">
+                                <!-- <li><a href="innovative-recipe.html">Innovative Recipe</a></li>
+                                <li><a href="donate-form.html">Donate to Needy</a></li> -->
+                            </ul>
+                        </li>
+                        <!-- <li><a href="small-scale-form.html">Small Scale Waste</a></li> -->
+                    </ul>
+                </li>
+
+                <!-- <li><a href="about.html">Let's start</a></li> -->
+                <li><a href="#footer">Contact Us</a></li>
+                <!-- <li><a href="#"><i class="fa fa-user"></i></a></li> -->
+                <div> xyz </div>
+            </ul>
+        </nav>    
+
+        <!-- Hero Section -->
+        <div class="hero-section">
+            <div class="hero-content">  <br> <br> <br> <br>
+                <h1>MEALLOOP</h1>
+                <p><b>"Connecting meals to  meaningful solutions."</b> <br> <br> MealLoop is a platform dedicated to bridging the gap between food surplus and those in need. By effectively managing excess food from restaurants, supermarkets, and households, we transform potential waste into a powerful tool for change. Our mission is to provide hope to communities and ensure that every meal finds a purpose, creating a sustainable loop of sharing and caring.</p>
+                <!-- <a href="#learn-more" class="read-more-btn">Read more...</a> -->
+            </div>
+            <div class="hero-image">
+                <img src="\\assets\\donation.jpg" alt="Waste Management">
+            </div>
+            <div class="decorative-leaves"></div>
+        </div>
+
+            </div>
+        </div>
+    </div> 
+    <div>
+        <!-- Add this after your header section -->
+        <div class="content-sections">
+        <!-- Bulk Scale Section -->
+            <section class="info-section">
+                <div class="text-content">
+                    <h2>Bulk Scale Waste Management</h2>
+                    <p>Are you a restaurant, hotel, supermarket, or food manufacturing company with excess food? Partner with us as a bulk donor to efficiently channel your surplus towards reducing food waste and supporting communities in need. Together, we can transform large-scale food waste into a powerful resource for positive change.</p>
+                    <a href="/bsm.html" onclick="navtobsm()" class="learn-more">Learn More</a>
+                </div>
+                <div class="image-content">
+                    <a href="bulkform.html">
+                        <img src="\pics\bulkfood.jpg" alt="Bulk Scale Waste Management" class="section-image">
+                    </a>
+                </div>
+            </section>
+    
+        <!-- Small Scale Section -->
+        <section class="info-section reverse">
+            <div class="text-content">
+                <h2>Small Scale Waste Management</h2>
+                <p>Are you an individual, family, or small business with leftover meals or unused groceries? Join us as a small-scale donor and make a meaningful contribution to reducing food waste. Every little effort counts in building a sustainable future for our planet and helping those in need.</p>
+                <a href="smallform.html" class="learn-more">Learn More</a>
+            </div>
+            <div class="image-content">
+                <a href="small-donor-page.html">
+                    <img src="\pics\manure.jpg" alt="Small Scale Waste Management" class="section-image">
+                </a>
+            </div>
+        </section>
+    
+        <!-- Recipe Chatbot Section -->
+        <section class="info-section">
+            <div class="text-content">
+                <h2>Smart Recipe Assistant</h2>
+                <p>Not sure what to cook with your leftover ingredients? Our AI-powered recipe assistant is here to help! Get personalized recipe suggestions based on the ingredients you have, reduce food waste, and discover exciting new dishes. Simply tell our chatbot what's in your kitchen, and it will suggest creative ways to use them.</p>
+                <a href="smallform.html" class="learn-more">Try Recipe Assistant</a>
+            </div>
+            <div class="image-content">
+                <a href="smallform.html">
+                    <img src="\pics\box.jpg" alt="Recipe Chatbot" class="section-image">
+                </a>
+            </div>
+        </section>
+    </div>
+    </div>
+<!-- about us -->
+<a href="bulkform.html" class="start-btn">Next</a>
+
+<div class="about-msg">
+    <h2>About MealLoop</h2>
+    <p>At *Meal Loop*, we are committed to transforming the way food waste is managed. Our mission is simple yet impactful: to connect surplus meals to meaningful solutions. By bridging the gap between food producers, consumers, and recycling initiatives, we aim to reduce waste, promote sustainability, and create a healthier planet.  
+    </br></p><br><p>
+    With innovation and care at the core of what we do, Meal Loop provides a platform where excess food finds new purpose—whether it's feeding communities or contributing to eco-friendly recycling. Join us in our journey to make every meal matter!</p>
+    <p>Contact us : email:-xyz@gmail.com</p>
+</div>
+
+<div class="footer">
+    <a href="https://facebook.com/"><i class="fa-brands fa-facebook"></i></a>
+    <a href="https://youtube.com"><i class="fa-brands fa-youtube"></i></a>
+    <a href="https://twitter.com"><i class="fa-brands fa-twitter"></i></a>
+    <a href="https://linkedin.com"><i class="fa-brands fa-linkedin"></i></a>
+    <a href="https://instagram.com"><i class="fa-brands fa-instagram"></i></a>
+    <hr>
+    <p>Copyright &copy; 2023,Easy website</p>
+</div>
+<script>
+    function navtobsm(){
+        window.location.href = "/bsm.html";
+    }
+</script>
+</body>
+</html>
+ 

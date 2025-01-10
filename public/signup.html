@@ -1,0 +1,592 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .title {
+            color: #1E3A8A;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-top: 4px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #FF914D;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #FF914D;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 16px;
+        }
+
+        button:hover {
+            background-color: #ff8033;
+        }
+
+        label {
+            color: #1E3A8A;
+            font-weight: 500;
+        }
+
+        .switch-page {
+            text-align: center;
+            color: #1E3A8A;
+        }
+
+        .switch-page a {
+            color: #FF914D;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .switch-page a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="title">Sign Up</h2>
+        <div id="signup-form">
+            <div class="input-group">
+                <label for="signup-username">Username</label>
+                <input type="text" id="signup-username" name="username" placeholder="Create a username">
+            </div>
+            <div class="input-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" name="password" placeholder="Create a password">
+            </div>
+            <button onclick="signup()">Sign Up</button>
+            <div class="switch-page">
+                Already have an account? <a onclick="navtosignin()">Sign In</a>
+            </div>
+            <div id="error-message" class="error-message"></div>
+        </div>
+    </div>
+
+    <script>
+        // async function signup() {
+        //     try {
+        //         const username = document.getElementById('signup-username').value.trim();
+        //         const password = document.getElementById('signup-password').value.trim();
+
+        //         if (!username || !password) {
+        //             displayError("Both fields are required.");
+        //             return;
+        //         }
+
+        //         const response = await axios.post('http://localhost:3000/signup', {
+        //             username: username,
+        //             password: password
+        //         });
+
+        //         if (response.status === 201) {
+        //             alert("Account created successfully!");
+        //             window.location.href = "signin.html";
+        //         }
+        //     } catch (error) {
+        //         displayError(error.response?.data?.error || "Signup failed. Please try again.");
+        //     }
+        // }
+
+        async function signup() 
+    {
+    try {
+        const username = document.getElementById('signup-username').value.trim();
+        const password = document.getElementById('signup-password').value.trim();
+
+        if (!username || !password) {
+            displayError("Both fields are required.");
+            return;
+        }
+
+        const response = await axios.post('http://localhost:3000/signup', {
+            username: username,
+            password: password
+        });
+
+        if (response.status === 201 || response.status === 200) {
+            alert("Account created successfully!");
+        }
+    } catch (error) {
+        displayError(error.response?.data?.message || "Signup failed.");
+    }
+}
+
+function navtosignin(){
+    window.location.href = "signin.html";
+}
+function displayError(message) {
+            const errorMessageElement = document.getElementById('error-message');
+            errorMessageElement.textContent = message;
+        }
+    </script>
+</body>
+</html> -->
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .title {
+            color: #1E3A8A;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            margin-top: 4px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #FF914D;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #FF914D;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 16px;
+        }
+
+        button:hover {
+            background-color: #ff8033;
+        }
+
+        label {
+            color: #1E3A8A;
+            font-weight: 500;
+        }
+
+        .switch-page {
+            text-align: center;
+            color: #1E3A8A;
+        }
+
+        .switch-page a {
+            color: #FF914D;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .switch-page a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="title">Sign Up</h2>
+        <div id="signup-form">
+            <div class="input-group">
+                <label for="signup-username">Username</label>
+                <input type="text" id="signup-username" name="username" placeholder="Create a username">
+            </div>
+            <div class="input-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" name="password" placeholder="Create a password">
+            </div>
+            <button onclick="signup()">Sign Up</button>
+            <div class="switch-page">
+                Already have an account? <a href="/signin" onclick="navtosignin()">Sign In</a>
+            </div>
+            <div id="error-message" class="error-message"></div>
+        </div>
+    </div>
+
+    <script>
+        async function signup() {
+            try {
+                const username = document.getElementById('signup-username').value.trim();
+                const password = document.getElementById('signup-password').value.trim();
+
+                if (!username || !password) {
+                    displayError("Both fields are required.");
+                    return;
+                }
+
+                const response = await axios.post('/signup', {
+                    username: username,
+                    password: password
+                });
+
+                if (response.status === 201) {
+                    console.log("Account created successfully!");
+                    window.location.href = '/dashboard';
+                }
+                function navtosignin(){
+
+                    window.location.href = '/signin';
+                }
+            } catch (error) {
+                displayError(error.response?.data?.message || "Signup failed.");
+            }
+
+        }
+
+        function displayError(message) {
+            const errorMessageElement = document.getElementById('error-message');
+            errorMessageElement.textContent = message;
+        }
+    </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(to bottom, #f0fdf4, #dcfce7);
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120px;
+            background: #16a34a;
+            overflow: hidden;
+        }
+
+        .header-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('/api/placeholder/400/320') center/cover;
+            opacity: 0.3;
+        }
+
+        .logo-container {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            margin: 70px auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            color: #16a34a;
+        }
+
+        .title {
+            color: #166534;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        label {
+            color: #16a34a;
+            font-weight: 500;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dcfce7;
+            border-radius: 8px;
+            margin-top: 4px;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #16a34a;
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background-color: #16a34a;
+            color: white;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        button:hover {
+            background-color: #15803d;
+        }
+
+        .switch-page {
+            text-align: center;
+            color: #166534;
+        }
+
+        .switch-page a {
+            color: #16a34a;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .switch-page a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #dc2626;
+            text-align: center;
+            margin-top: 12px;
+            padding: 8px;
+            border-radius: 6px;
+            background-color: #fef2f2;
+        }
+
+        .footer-text {
+            text-align: center;
+            margin-top: 24px;
+            color: #16a34a;
+            font-size: 14px;
+        }
+
+        .footer-text p:last-child {
+            color: #22c55e;
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-image"></div>
+        <div class="logo-container">
+           
+            <img src ="/assets/logo.jpg" alt="image">
+        </div>
+        <h2 class="title">Sign Up</h2>
+        <div id="signup-form">
+            <div class="input-group">
+                <label for="signup-username">Username</label>
+                <input type="text" id="signup-username" name="username" placeholder="Create a username">
+            </div>
+            <div class="input-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" name="password" placeholder="Create a password">
+            </div>
+            <button onclick="signup()">
+                Sign Up
+                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                </svg>
+            </button>
+            <div class="switch-page">
+                Already have an account? <a href="/signin" onclick="navtosignin()">Sign In</a>
+            </div>
+            <div id="error-message" class="error-message"></div>
+            <div class="footer-text">
+                <p>Join us in reducing food waste</p>
+                <p>Every action counts</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function signup() {
+            try {
+                const username = document.getElementById('signup-username').value.trim();
+                const password = document.getElementById('signup-password').value.trim();
+
+                if (!username || !password) {
+                    displayError("Both fields are required.");
+                    return;
+                }
+
+                const response = await axios.post('/signup', {
+                    username: username,
+                    password: password
+                });
+
+                if (response.status === 201) {
+                    console.log("Account created successfully!");
+                    window.location.href = '/dashboard';
+                }
+                function navtosignin(){
+                    window.location.href = '/signin';
+                }
+            } catch (error) {
+                displayError(error.response?.data?.message || "Signup failed.");
+            }
+        }
+
+        function displayError(message) {
+            const errorMessageElement = document.getElementById('error-message');
+            errorMessageElement.textContent = message;
+        }
+    </script>
+</body>
+</html>
