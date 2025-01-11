@@ -129,6 +129,13 @@ app.get('/signin', (req, res) => {
 app.get('/dashboard', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'dashboard.html'));
 });
+app.get('/donner1', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'donner1.html'));
+});
+
+app.get('/food-wast-managment-website/Foodbot/foodbot.html', (req, res) => {
+res.sendFile(path.join(__dirname, 'Foodbot', 'foodbot.html'));
+});
 
 // API endpoints
 app.post('/signup', (req, res) => {
