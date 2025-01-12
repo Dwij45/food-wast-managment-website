@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Donation Connector</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #matches {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .match-card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 4px;
+            display: none;
+        }
+    </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+
+</head>
+<body>
+    <h1>Food Donation Connector</h1>
+    
+    <div class="container">
+        <div class="form-container">
+            <h2>Donor Registration</h2>
+            <form id="donorForm">
+                <div class="form-group">
+                    <label for="donorName">Name:</label>
+                    <input type="text" id="donorName" required>
+                </div>
+                <div class="form-group">
+                    <label for="donorEmail">Email:</label>
+                    <input type="email" id="donorEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="donorPhone">Phone:</label>
+                    <input type="tel" id="donorPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="donorLocation">Location:</label>
+                    <input type="text" id="donorLocation" required>
+                </div>
+                <div class="form-group">
+                    <label for="foodType">Food Type:</label>
+                    <select id="foodType" required>
+                        <option value="">Select food type</option>
+                        <option value="cooked">Cooked Food</option>
+                        <option value="packaged">Packaged Food</option>
+                        <option value="fresh">Fresh Produce</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity (servings):</label>
+                    <input type="number" id="quantity" required>
+                </div>
+                <div class="form-group">
+                    <label for="expiryTime">Available Until:</label>
+                    <input type="datetime-local" id="expiryTime" required>
+                </div>
+                <button type="submit">Register as Donor</button>
+            </form>
+        </div>
+
+        <div class="form-container">
+            <h2>Recipient Registration</h2>
+            <form id="recipientForm">
+                <div class="form-group">
+                    <label for="recipientName">Name:</label>
+                    <input type="text" id="recipientName" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipientEmail">Email:</label>
+                    <input type="email" id="recipientEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipientPhone">Phone:</label>
+                    <input type="tel" id="recipientPhone" required>
+                </div>
+                <div class="form-group">
+                    <label for="recipientLocation">Location:</label>
+                    <input type="text" id="recipientLocation" required>
+                </div>
+                <div class="form-group">
+                    <label for="peopleCount">Number of People:</label>
+                    <input type="number" id="peopleCount" required>
+                </div>
+                <div class="form-group">
+                    <label for="foodPreference">Food Preference:</label>
+                    <select id="foodPreference" required>
+                        <option value="">Select preference</option>
+                        <option value="cooked">Cooked Food</option>
+                        <option value="packaged">Packaged Food</option>
+                        <option value="fresh">Fresh Produce</option>
+                        <option value="any">Any</option>
+                    </select>
+                </div>
+                <button type="submit">Register as Recipient</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="matches">
+        <h2>Available Matches</h2>
+        <div id="matchList"></div>
+    </div>
+
+    <div id="notification" class="notification"></div>
+
+    <script>
+        let donors = [];
+        let recipients = [];
+
+        // Handle donor form submission
+        document.getElementById('donorForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const donor = {
+                name: document.getElementById('donorName').value,
+                email: document.getElementById('donorEmail').value,
+                phone: document.getElementById('donorPhone').value,
+                location: document.getElementById('donorLocation').value.toLowerCase(),
+                foodType: document.getElementById('foodType').value,
+                quantity: document.getElementById('quantity').value,
+                expiryTime: document.getElementById('expiryTime').value,
+                timestamp: new Date().getTime()
+            };
+            donors.push(donor);
+            showNotification('Donor registration successful!');
+            findMatches();
+            this.reset();
+        });
+
+        // Handle recipient form submission
+        document.getElementById('recipientForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const recipient = {
+                name: document.getElementById('recipientName').value,
+                email: document.getElementById('recipientEmail').value,
+                phone: document.getElementById('recipientPhone').value,
+                location: document.getElementById('recipientLocation').value.toLowerCase(),
+                peopleCount: document.getElementById('peopleCount').value,
+                foodPreference: document.getElementById('foodPreference').value,
+                timestamp: new Date().getTime()
+            };
+            recipients.push(recipient);
+            showNotification('Recipient registration successful!');
+            findMatches();
+            this.reset();
+        });
+
+        function findMatches() {
+            const matchList = document.getElementById('matchList');
+            matchList.innerHTML = '';
+
+            donors.forEach(donor => {
+                recipients.forEach(recipient => {
+                    if (isMatch(donor, recipient)) {
+                        const matchCard = createMatchCard(donor, recipient);
+                        matchList.appendChild(matchCard);
+                        notifyMatch(donor, recipient);
+                    }
+                });
+            });
+        }
+
+        function isMatch(donor, recipient) {
+            const sameLocation = donor.location === recipient.location;
+            const compatibleFood = recipient.foodPreference === 'any' || 
+                                 donor.foodType === recipient.foodPreference;
+            const notExpired = new Date(donor.expiryTime) > new Date();
+            
+            return sameLocation && compatibleFood && notExpired;
+        }
+
+        function createMatchCard(donor, recipient) {
+            const div = document.createElement('div');
+            div.className = 'match-card';
+            div.innerHTML = `
+                <h3>Match Found!</h3>
+                <p><strong>Donor:</strong> ${donor.name}</p>
+                <p><strong>Food Type:</strong> ${donor.foodType}</p>
+                <p><strong>Quantity:</strong> ${donor.quantity} servings</p>
+                <p><strong>Location:</strong> ${donor.location}</p>
+                <p><strong>Available Until:</strong> ${new Date(donor.expiryTime).toLocaleString()}</p>
+                <p><strong>Recipient:</strong> ${recipient.name}</p>
+                <p><strong>People to Feed:</strong> ${recipient.peopleCount}</p>
+            `;
+            return div;
+        }
+
+        function notifyMatch(donor, recipient) {
+            const notification = document.getElementById('notification');
+            notification.textContent = New match found between ${donor.name} and ${recipient.name}!;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 5000);
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
